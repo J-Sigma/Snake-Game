@@ -54,6 +54,15 @@ class snake():
         self.body.append(self.head)
         self.dirnx = 0
         self.dirny = 1
+
+    def isBackward(self, dirnx, dirny):
+        if len(self.body) > 1:
+            head = self.body[0]
+            neck = self.body[1]
+
+            return head.pos[0]+dirnx == neck.pos[0] and head.pos[1]+dirny == neck.pos[1]
+
+        return False
     
     def move(self):
         for event in pygame.event.get():
@@ -62,19 +71,19 @@ class snake():
             keys = pygame.key.get_pressed()
 
             for key in keys:
-                if keys[pygame.K_LEFT]:
+                if keys[pygame.K_LEFT] and not self.isBackward(-1, 0):
                     self.dirnx = -1
                     self.dirny = 0
                     self.turns[self.head.pos[:]] = [self.dirnx,self.dirny]
-                elif keys[pygame.K_RIGHT]:
+                elif keys[pygame.K_RIGHT] and not self.isBackward(1, 0):
                     self.dirnx = 1
                     self.dirny = 0
                     self.turns[self.head.pos[:]] = [self.dirnx,self.dirny]
-                elif keys[pygame.K_UP]:
+                elif keys[pygame.K_UP] and not self.isBackward(0, -1):
                     self.dirny = -1
                     self.dirnx = 0
                     self.turns[self.head.pos[:]] = [self.dirnx,self.dirny]
-                elif keys[pygame.K_DOWN]:
+                elif keys[pygame.K_DOWN] and not self.isBackward(0, 1):
                     self.dirny = 1
                     self.dirnx = 0
                     self.turns[self.head.pos[:]] = [self.dirnx,self.dirny]
@@ -193,6 +202,3 @@ def main():
         redrawWindow()
 
 main()
-    
-
-    
